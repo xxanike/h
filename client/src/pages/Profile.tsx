@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Package, DollarSign, Clock, CheckCircle, XCircle, Download } from "lucide-react";
-import { useAuth } from "@/contexts/AuthContext";
+import { useAuth } from "@/contexts/NewAuthContext";
 import type { Product, Order } from "@shared/schema";
 import { Skeleton } from "@/components/ui/skeleton";
 import { UploadModal } from "@/components/UploadModal";

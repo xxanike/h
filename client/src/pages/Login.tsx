@@ -2,7 +2,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button";
 import { Shield, Package, CreditCard } from "lucide-react";
 import { SiGoogle } from "react-icons/si";
-import { useAuth } from "@/contexts/AuthContext";
+import { useAuth } from "@/contexts/NewAuthContext";
 import { Redirect } from "wouter";
 
 export default function Login() {

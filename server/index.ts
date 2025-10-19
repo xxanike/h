@@ -1,7 +1,9 @@
 import express, { type Request, Response, NextFunction } from "express";
-import { registerRoutes } from "./routes";
+import path from "path";
+import { registerRoutes } from "./newRoutes";
 import { setupVite, serveStatic, log } from "./vite";
 import { validateConfigOrExit } from "./config";
+import { setupAuth } from "./auth";
 
 // Validate configuration before starting the server
 validateConfigOrExit();
@@ -9,6 +11,12 @@ validateConfigOrExit();
 const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+
+// Setup authentication (Passport + sessions)
+setupAuth(app);
+
+// Serve uploaded files
+app.use("/uploads", express.static(path.join(process.cwd(), "uploads")));
 
 app.use((req, res, next) => {
   const start = Date.now();

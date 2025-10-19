@@ -32,11 +32,11 @@ export const config = {
   // Session secret (required for session management)
   sessionSecret: process.env.SESSION_SECRET || "",
 
-  // Google OAuth (optional - only needed for extended Google API access)
-  // Firebase Auth handles Google Sign-in without these
+  // Google OAuth (required for authentication)
   googleOAuth: {
     clientId: process.env.GOOGLE_CLIENT_ID || "",
     clientSecret: process.env.GOOGLE_CLIENT_SECRET || "",
+    callbackURL: process.env.GOOGLE_CALLBACK_URL || "https://senpainetwork.netlify.app/api/auth/google/callback",
   },
 
   // File upload limits
@@ -71,9 +71,8 @@ export function isFirebaseAdminConfigured(): boolean {
 export function validateConfig(): { valid: boolean; missing: string[] } {
   const missing: string[] = [];
 
-  if (!config.firebase.projectId) missing.push("VITE_FIREBASE_PROJECT_ID");
-  if (!config.firebase.appId) missing.push("VITE_FIREBASE_APP_ID");
-  if (!config.firebase.apiKey) missing.push("VITE_FIREBASE_API_KEY");
+  if (!config.googleOAuth.clientId) missing.push("GOOGLE_CLIENT_ID");
+  if (!config.googleOAuth.clientSecret) missing.push("GOOGLE_CLIENT_SECRET");
   if (!config.sessionSecret) {
     missing.push("SESSION_SECRET");
   }

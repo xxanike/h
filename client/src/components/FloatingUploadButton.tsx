@@ -1,6 +1,6 @@
 import { Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { useAuth } from "@/contexts/AuthContext";
+import { useAuth } from "@/contexts/NewAuthContext";
 import { useState } from "react";
 import { UploadModal } from "@/components/UploadModal";
 

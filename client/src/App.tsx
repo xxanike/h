@@ -1,11 +1,11 @@
 import { Switch, Route } from "wouter";
-import { queryClient } from "./lib/queryClient";
+import { queryClient } from "./lib/newQueryClient";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/AppSidebar";
-import { AuthProvider, useAuth } from "@/contexts/AuthContext";
+import { AuthProvider, useAuth } from "@/contexts/NewAuthContext";
 import { ThemeProvider, useTheme } from "@/components/ThemeProvider";
 import { FloatingUploadButton } from "@/components/FloatingUploadButton";
 import { Button } from "@/components/ui/button";

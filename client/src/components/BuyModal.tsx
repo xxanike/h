@@ -4,9 +4,9 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } f
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { useAuth } from "@/contexts/AuthContext";
+import { useAuth } from "@/contexts/NewAuthContext";
 import { useToast } from "@/hooks/use-toast";
-import { apiRequest, queryClient } from "@/lib/queryClient";
+import { apiRequest, queryClient } from "@/lib/newQueryClient";
 import type { Product } from "@shared/schema";
 import qrImage from "@assets/scan here_1760606417275.png";
 
@@ -24,7 +24,7 @@ interface BuyModalProps {
 }
 
 export function BuyModal({ product, open, onClose }: BuyModalProps) {
-  const { user, firebaseUser } = useAuth();
+  const { user } = useAuth();
   const { toast } = useToast();
   const [processing, setProcessing] = useState(false);
   const [transactionId, setTransactionId] = useState("");
@@ -38,7 +38,7 @@ export function BuyModal({ product, open, onClose }: BuyModalProps) {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    if (!product || !user || !firebaseUser) return;
+    if (!product || !user) return;
 
     // Ensure marketplace config is loaded before proceeding
     if (!marketplaceConfig) {
@@ -53,14 +53,12 @@ export function BuyModal({ product, open, onClose }: BuyModalProps) {
     setProcessing(true);
 
     try {
-      const token = await firebaseUser.getIdToken();
-      
       await fetch("/api/orders", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
         },
+        credentials: "include",
         body: JSON.stringify({
           productId: product.id,
           productTitle: product.title,

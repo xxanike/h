@@ -7,15 +7,15 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { CheckCircle, XCircle, Download, Clock, Shield, FileText } from "lucide-react";
-import { useAuth } from "@/contexts/AuthContext";
-import { apiRequest, queryClient } from "@/lib/queryClient";
+import { useAuth } from "@/contexts/NewAuthContext";
+import { apiRequest, queryClient } from "@/lib/newQueryClient";
 import { useToast } from "@/hooks/use-toast";
 import type { Product, Order, AdminLog } from "@shared/schema";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Redirect } from "wouter";
 
 export default function Admin() {
-  const { user, firebaseUser } = useAuth();
+  const { user } = useAuth();
   const { toast } = useToast();
 
   const { data: pendingProducts, isLoading: productsLoading } = useQuery<Product[]>({
@@ -32,13 +32,12 @@ export default function Admin() {
 
   const approveProductMutation = useMutation({
     mutationFn: async (productId: string) => {
-      const token = await firebaseUser?.getIdToken();
       const response = await fetch(`/api/admin/products/${productId}/approve`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
         },
+        credentials: "include",
       });
       if (!response.ok) throw new Error("Failed to approve product");
       return response.json();
@@ -52,13 +51,12 @@ export default function Admin() {
 
   const rejectProductMutation = useMutation({
     mutationFn: async ({ productId, reason }: { productId: string; reason: string }) => {
-      const token = await firebaseUser?.getIdToken();
       const response = await fetch(`/api/admin/products/${productId}/reject`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
         },
+        credentials: "include",
         body: JSON.stringify({ reason }),
       });
       if (!response.ok) throw new Error("Failed to reject product");
@@ -73,13 +71,12 @@ export default function Admin() {
 
   const verifyPaymentMutation = useMutation({
     mutationFn: async (orderId: string) => {
-      const token = await firebaseUser?.getIdToken();
       const response = await fetch(`/api/admin/orders/${orderId}/verify`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
         },
+        credentials: "include",
       });
       if (!response.ok) throw new Error("Failed to verify payment");
       return response.json();
@@ -93,13 +90,12 @@ export default function Admin() {
 
   const rejectPaymentMutation = useMutation({
     mutationFn: async (orderId: string) => {
-      const token = await firebaseUser?.getIdToken();
       const response = await fetch(`/api/admin/orders/${orderId}/reject`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
         },
+        credentials: "include",
       });
       if (!response.ok) throw new Error("Failed to reject payment");
       return response.json();
@@ -113,12 +109,9 @@ export default function Admin() {
 
   const downloadFileMutation = useMutation({
     mutationFn: async (productId: string) => {
-      const token = await firebaseUser?.getIdToken();
       const response = await fetch(`/api/admin/products/${productId}/download`, {
         method: "GET",
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+        credentials: "include",
       });
       if (!response.ok) throw new Error("Failed to get download URL");
       return response.json() as Promise<{ downloadURL: string }>;

@@ -6,9 +6,9 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
 import { Upload, X, FileText, AlertCircle } from "lucide-react";
-import { useAuth } from "@/contexts/AuthContext";
+import { useAuth } from "@/contexts/NewAuthContext";
 import { useToast } from "@/hooks/use-toast";
-import { apiRequest, queryClient } from "@/lib/queryClient";
+import { apiRequest, queryClient } from "@/lib/newQueryClient";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 
 interface UploadModalProps {
@@ -17,7 +17,7 @@ interface UploadModalProps {
 }
 
 export function UploadModal({ open, onClose }: UploadModalProps) {
-  const { user, firebaseUser } = useAuth();
+  const { user } = useAuth();
   const { toast } = useToast();
   const [uploading, setUploading] = useState(false);
   
@@ -98,7 +98,6 @@ export function UploadModal({ open, onClose }: UploadModalProps) {
     setUploading(true);
 
     try {
-      const token = await firebaseUser?.getIdToken();
       const uploadFormData = new FormData();
       uploadFormData.append("title", formData.title);
       uploadFormData.append("description", formData.description);
@@ -109,9 +108,7 @@ export function UploadModal({ open, onClose }: UploadModalProps) {
 
       const response = await fetch("/api/products", {
         method: "POST",
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+        credentials: "include",
         body: uploadFormData,
       });
 
