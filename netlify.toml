@@ -1,0 +1,29 @@
+[build]
+  # Build command - builds both frontend and backend
+  command = "npm run build"
+  # Publish directory - where the built frontend files are
+  publish = "dist/public"
+  # Functions directory - for serverless backend (Netlify doesn't support this Express setup)
+  
+[build.environment]
+  NODE_VERSION = "20"
+
+# Redirect all requests to index.html for client-side routing
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+# Note: This is a fullstack Express + React app
+# Netlify is designed for static sites or serverless functions
+# This configuration will only work for the FRONTEND static build
+# The backend Express API will NOT work on Netlify
+
+# For full functionality, you need to:
+# 1. Deploy frontend to Netlify (static files)
+# 2. Deploy backend to a service that supports Node.js servers:
+#    - Render.com (recommended, free tier available)
+#    - Railway.app 
+#    - Fly.io
+#    - Heroku
+#    - Or use Replit Deployments (easiest option!)

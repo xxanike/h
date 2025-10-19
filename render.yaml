@@ -1,0 +1,32 @@
+# Render.com deployment configuration
+# This is the RECOMMENDED deployment option for this fullstack app
+# Render supports both static sites and Node.js web services
+
+services:
+  # Backend API Server
+  - type: web
+    name: senpai-marketplace-api
+    env: node
+    region: oregon
+    plan: free
+    buildCommand: npm install && npm run build
+    startCommand: npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: VITE_FIREBASE_PROJECT_ID
+        sync: false
+      - key: VITE_FIREBASE_APP_ID
+        sync: false
+      - key: VITE_FIREBASE_API_KEY
+        sync: false
+      - key: SESSION_SECRET
+        generateValue: true
+      - key: MARKETPLACE_UPI_ID
+        value: anikashyap07@fam
+      - key: FIREBASE_SERVICE_ACCOUNT
+        sync: false
+    healthCheckPath: /api/config/marketplace
+
+# Note: This deploys the entire fullstack app as a single service
+# The backend serves both the API and the static frontend files

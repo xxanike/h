@@ -1,0 +1,16 @@
+Build a full-stack **Senpai Network Marketplace** as a **100% free-usage** project (no paid APIs). Use **Python (Flask)** backend + **React** frontend (Tailwind optional). Use Firebase (Auth/Firestore/Storage) or plain Firestore REST if preferred — use free tier only. Google sign-in only. All secrets must come from `.env` / `config.py`.  
+
+Key requirements:
+- Use `anikashyap07@fam` as the marketplace UPI id and include the provided QR image at `/mnt/data/scan here.png` for the Buy modal. Show QR image for buyer to scan; buyer then enters txn/UTR id + amount.  
+- Pages/tabs: **Home**, **Product Detail**, **Profile**, **Settings**, **Admin**, plus a centered floating **+ Upload** button. Responsive UI.  
+- Sellers can upload products (title, price in ₹, tags, description, thumbnail, files). Uploads go to `pending` until admin approval. Admins may download any uploaded file without paying. Save uploads in Firebase Storage or local storage (free). Store file metadata in Firestore (or simple JSON DB).  
+- Buy flow: Buyer clicks Buy → shows QR + instructions → buyer enters Transaction ID (UTR) and amount → create order with status `pending_verification`. Admin panel lists pending payments; admin verifies; upon verification the buyer gets access link to download file.  
+- Commission: store `seller_earn = price * 0.7` and `marketplace_commission = price * 0.3` in DB. No automatic transfers — owner pays sellers manually via UPI and marks payout done in admin.  
+- Auth: Google-only sign-in. Create user documents with `role` field (`buyer|seller|admin`). Protect admin routes by role.  
+- Admin features: approve/reject product uploads, verify/reject payments, view/download any uploaded file, view audit log of admin actions. Log every admin action to `admin_logs` collection.  
+- Security: implement file type & size restrictions, placeholder virus-scan hook (callable function to plug real scanner later), show seller consent notice that admins may access uploaded files. Do not commit any secrets.  
+- Config: read all keys from `.env` or `config.py`. Provide example `.env.example`. Required envs should include: `FLASK_SECRET_KEY`, `FIREBASE_*` if used, `MARKETPLACE_UPI_ID=anikashyap07@fam`, `DISCORD_WEBHOOK_URL` (optional).  
+- Deliverables: full repo scaffold (backend/ frontend), a README with run/deploy instructions for Replit, sample `.env.example`, and comments where to replace QR image path with `/mnt/data/scan here.png`. Keep everything runnable on Replit free tier; avoid background workers or paid services. Add instructions for hosting the QR as static asset in Replit.  
+- Optional extras to include as placeholders: Discord webhook notifications for new uploads/orders; seller analytics endpoints; admin email notifications. Mark these optional in code with comments.  
+
+Output: generate the entire file tree and core files (Flask `app.py`, `config.py`, `products.py`, `orders.py`, `admin.py`, React `App.jsx`, `Navbar.jsx`, `UploadModal.jsx`, `Home.jsx`, `Profile.jsx`, `Settings.jsx`), and a README ready to push to GitHub. Use plain, well-commented code.
